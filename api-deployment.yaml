@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: api
+  name: api
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      io.kompose.service: api
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: api
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DATABASE
+              value: postcodesiodb
+            - name: POSTGRES_HOST
+              value: db
+            - name: POSTGRES_PASSWORD
+              value: secret
+            - name: POSTGRES_USER
+              value: postcodesio
+          image: idealpostcodes/postcodes.io:latest
+          name: api
+          ports:
+            - containerPort: 8000
+          resources: {}
+      restartPolicy: Always
+status: {}
